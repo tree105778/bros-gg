@@ -1,4 +1,4 @@
-import { Action, ADD_ITEM, REMOVE_ITEM, State } from "@/types";
+import { Action, ADD_ITEM, REMOVE_ALL_ITEM, REMOVE_ITEM, State } from "@/types";
 
 export const initialState: State = {
   droppedItems: [],
@@ -41,7 +41,10 @@ export function reducer(state: State, action: Action): State {
         droppedItems: newDroppedItems,
         traits: newTraitsRemove,
       };
-
+    case REMOVE_ALL_ITEM:
+      return {
+        ...initialState,
+      };
     default:
       return state;
   }

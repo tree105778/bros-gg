@@ -8,6 +8,8 @@ export type Champion = {
 
 export const ADD_ITEM = "ADD_ITEM";
 export const REMOVE_ITEM = "REMOVE_ITEM";
+export const REMOVE_ALL_ITEM = "REMOVE_ALL_ITEM";
+
 export type State = {
   droppedItems: string[];
   traits: { [key: string]: number };
@@ -15,7 +17,8 @@ export type State = {
 
 export type Action =
   | { type: "ADD_ITEM"; payload: Champion }
-  | { type: "REMOVE_ITEM"; payload: Champion };
+  | { type: "REMOVE_ITEM"; payload: Champion }
+  | { type: "REMOVE_ALL_ITEM" };
 
 export interface championIndexInfo {
   championAndIndex: Map<string, Champion>;

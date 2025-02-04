@@ -5,10 +5,12 @@ import {
   DroppedChampionContext,
   useChampionAndIndexStore,
 } from "./boardWithSelect";
+import { REMOVE_ALL_ITEM } from "@/types";
 
 export default function TraitSynergyTab() {
   const {
     state: { traits },
+    dispatch,
   } = useContext(DroppedChampionContext);
   const resetAllChampionAndIndex = useChampionAndIndexStore(
     (state) => state.resetAllChampionIndex
@@ -26,7 +28,14 @@ export default function TraitSynergyTab() {
           </div>
         ))}
       </div>
-      <button onClick={resetAllChampionAndIndex}>초기화</button>
+      <button
+        onClick={() => {
+          resetAllChampionAndIndex();
+          dispatch({ type: REMOVE_ALL_ITEM });
+        }}
+      >
+        초기화
+      </button>
     </>
   );
 }
