@@ -1,21 +1,39 @@
 "use client";
 
 import { useDrag, useDrop } from "react-dnd";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Image from "next/image";
-import { DroppedChampionContext } from "./boardWithSelect";
+import {
+  DroppedChampionContext,
+  useChampionAndIndexStore,
+} from "./boardWithSelect";
 import { ADD_ITEM, Champion, REMOVE_ITEM } from "@/types";
 
-export default function DroppableChampionBoard() {
+export default function DroppableChampionBoard({
+  X,
+  Y,
+}: {
+  X: number;
+  Y: number;
+}) {
+  const { championAndIndex, setChampionIndex, removeChampionIndex } =
+    useChampionAndIndexStore();
   const [champion, setChampion] = useState<Champion>();
   const { dispatch } = useContext(DroppedChampionContext);
+
+  useEffect(() => {
+    if (championAndIndex.has(`${X},${Y}`))
+      setChampion(championAndIndex.get(`${X},${Y}`));
+    else setChampion(undefined);
+  }, [championAndIndex, X, Y]);
 
   const [{ canDrop, isOver }, drop] = useDrop(
     () => ({
       accept: "CHAMPION",
       canDrop: () => !champion,
       drop: (item: Champion) => {
-        setChampion(item);
+        // setChampion(item);
+        setChampionIndex(X, Y, item);
         dispatch({ type: ADD_ITEM, payload: item });
       },
       collect: (monitor) => ({
@@ -38,7 +56,8 @@ export default function DroppableChampionBoard() {
       },
       end: () => {
         if (champion) {
-          setChampion(undefined);
+          // setChampion(undefined);
+          removeChampionIndex(X, Y);
           dispatch({ type: REMOVE_ITEM, payload: champion });
         }
       },

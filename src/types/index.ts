@@ -16,3 +16,10 @@ export type State = {
 export type Action =
   | { type: "ADD_ITEM"; payload: Champion }
   | { type: "REMOVE_ITEM"; payload: Champion };
+
+export interface championIndexInfo {
+  championAndIndex: Map<string, Champion>;
+  setChampionIndex: (x: number, y: number, champion: Champion) => void;
+  removeChampionIndex: (x: number, y: number, champion?: Champion) => void;
+  resetAllChampionIndex: () => void;
+}

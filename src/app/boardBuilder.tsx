@@ -15,7 +15,7 @@ export default function BoardBuilder() {
             }`}
           >
             <div className={styles.hexagon}>
-              <DroppableChampionBoard />
+              <DroppableChampionBoard X={Math.floor(idx / 7)} Y={idx % 7} />
             </div>
           </div>
         ))}

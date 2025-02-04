@@ -1,12 +1,18 @@
 "use client";
 
 import { useContext } from "react";
-import { DroppedChampionContext } from "./boardWithSelect";
+import {
+  DroppedChampionContext,
+  useChampionAndIndexStore,
+} from "./boardWithSelect";
 
 export default function TraitSynergyTab() {
   const {
     state: { traits },
   } = useContext(DroppedChampionContext);
+  const resetAllChampionAndIndex = useChampionAndIndexStore(
+    (state) => state.resetAllChampionIndex
+  );
 
   return (
     <>
@@ -20,7 +26,7 @@ export default function TraitSynergyTab() {
           </div>
         ))}
       </div>
-      <button>초기화</button>
+      <button onClick={resetAllChampionAndIndex}>초기화</button>
     </>
   );
 }
