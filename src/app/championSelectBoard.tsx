@@ -5,30 +5,13 @@ import DraggableChampionImage from "./draggableChampionImage";
 import clsx from "clsx";
 import { getChoseong } from "@/lib/getChoseong";
 import { Champion } from "@/types";
+import { processingChampions, updateProcessedChampions } from "@/lib";
 
 export default function ChampionSelectBoard() {
   const [champions, setChampions] = useState<Champion[]>([]);
   const [tabNavItem, setTabNabItem] = useState("name");
   const [processedChampions, setProcessedChampions] = useState<Champion[]>([]);
   const [onChangeChampionText, setOnchangeChampionText] = useState("");
-
-  const processingChampions = (criteria: string) => {
-    let sortedChampions = [...champions];
-    switch (criteria) {
-      case "name":
-        sortedChampions = sortedChampions.sort((a, b) =>
-          a.name.localeCompare(b.name)
-        );
-        break;
-      case "price":
-        sortedChampions = sortedChampions.sort((a, b) => a.cost - b.cost);
-        break;
-      default:
-        sortedChampions = [...champions];
-    }
-    setChampions(sortedChampions);
-    setProcessedChampions(sortedChampions);
-  };
 
   const searchChampions = (text: string) => {
     if (text === "") setProcessedChampions([...champions]);
@@ -44,8 +27,10 @@ export default function ChampionSelectBoard() {
 
   const switchToggle = (nav: string) => {
     setTabNabItem(nav);
-    processingChampions(nav);
-    searchChampions(onChangeChampionText);
+    setChampions(processingChampions(nav, champions));
+    setProcessedChampions(
+      updateProcessedChampions(nav, onChangeChampionText, champions)
+    );
   };
 
   const handleChampionSearchOnChange = (e: ChangeEvent<HTMLInputElement>) => {

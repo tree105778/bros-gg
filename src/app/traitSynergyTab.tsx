@@ -17,7 +17,7 @@ export default function TraitSynergyTab() {
   );
 
   return (
-    <>
+    <div className="flex flex-col justify-center">
       <div className="flex bg-[#27282e] gap-1 flex-wrap">
         {Object.entries(traits).map(([trait, count]) => (
           <div
@@ -33,9 +33,10 @@ export default function TraitSynergyTab() {
           resetAllChampionAndIndex();
           dispatch({ type: REMOVE_ALL_ITEM });
         }}
+        className="mx-auto w-[50px] h-full border border-black rounded"
       >
         초기화
       </button>
-    </>
+    </div>
   );
 }
