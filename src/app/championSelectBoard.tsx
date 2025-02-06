@@ -46,7 +46,7 @@ export default function ChampionSelectBoard() {
       setChampions(data);
       setProcessedChampions(data);
     }
-    fetchChampions("/data/champions.json");
+    fetchChampions("/data/S13/champions.json");
   }, []);
 
   const setClsxClass: (state: string) => string = (state) =>
