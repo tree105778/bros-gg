@@ -34,7 +34,9 @@ export default function SelectBoard() {
           아이템
         </button>
       </nav>
-      {champOrItemState === "champion" ? <ChampionSelectBoard /> : null}
+      {champOrItemState === "champion" ? (
+        <ChampionSelectBoard url="/data/S13/champions.json" />
+      ) : null}
     </div>
   );
 }

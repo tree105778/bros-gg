@@ -7,7 +7,7 @@ import { getChoseong } from "@/lib/getChoseong";
 import { Champion } from "@/types";
 import { processingChampions, updateProcessedChampions } from "@/lib";
 
-export default function ChampionSelectBoard() {
+export default function ChampionSelectBoard({ url }: { url: string }) {
   const [champions, setChampions] = useState<Champion[]>([]);
   const [tabNavItem, setTabNabItem] = useState("name");
   const [processedChampions, setProcessedChampions] = useState<Champion[]>([]);
@@ -46,8 +46,8 @@ export default function ChampionSelectBoard() {
       setChampions(data);
       setProcessedChampions(data);
     }
-    fetchChampions("/data/S13/champions.json");
-  }, []);
+    fetchChampions(url);
+  }, [url]);
 
   const setClsxClass: (state: string) => string = (state) =>
     clsx(

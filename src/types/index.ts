@@ -4,6 +4,8 @@ export type Champion = {
   cost: number;
   traits: string[];
   image: string;
+  star?: number;
+  item?: string[];
 };
 
 export const ADD_ITEM = "ADD_ITEM";

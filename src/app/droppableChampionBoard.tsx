@@ -32,7 +32,7 @@ export default function DroppableChampionBoard({
       accept: "CHAMPION",
       canDrop: () => !champion,
       drop: (item: Champion) => {
-        // setChampion(item);
+        if (!item.star) item.star = 1;
         setChampionIndex(X, Y, item);
         dispatch({ type: ADD_ITEM, payload: item });
       },
@@ -53,6 +53,8 @@ export default function DroppableChampionBoard({
         cost: champion?.cost || 0,
         traits: champion?.traits || [],
         image: champion?.image || "",
+        star: champion?.star,
+        item: champion?.item,
       },
       end: () => {
         if (champion) {
@@ -66,41 +68,66 @@ export default function DroppableChampionBoard({
   );
 
   return (
-    <div
-      ref={(node) => {
-        if (node) {
-          drop(node);
-        }
-      }}
-      style={{
-        backgroundColor: isOver
-          ? canDrop
-            ? "lightgreen"
-            : "transparent"
-          : "transparent",
-        width: "100%",
-        height: "100%",
-      }}
-    >
+    <>
       {champion !== undefined ? (
+        <div
+          className="absolute top-0 left-[50%] z-[1]"
+          style={{
+            transform: "translateX(-50%)",
+          }}
+        >
+          <div className="flex cursor-pointer gap-x-[2px]">
+            <div
+              className="size-5 rounded-full border bg-white bg-no-repeat bg-center bg-[length:75%]"
+              style={{ backgroundImage: 'url("/champion-star-1.jpeg")' }}
+            ></div>
+          </div>
+        </div>
+      ) : null}
+      <div
+        style={{
+          clipPath:
+            "polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)",
+          backgroundColor: "rgb(34, 34, 34)",
+          width: "100%",
+          height: "100%",
+          margin: 0,
+          position: "relative",
+        }}
+      >
         <div
           ref={(node) => {
             if (node) {
-              drag(node);
+              drop(node);
             }
           }}
           style={{
-            position: "relative",
+            backgroundColor: isOver
+              ? canDrop
+                ? "lightgreen"
+                : "transparent"
+              : "transparent",
             width: "100%",
             height: "100%",
-            overflow: "hidden",
+            position: "relative",
             clipPath:
               "polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)",
+            overflow: "visible",
           }}
         >
-          <Image src={champion.image} alt={champion.name} fill />
+          {champion !== undefined ? (
+            <div
+              ref={(node) => {
+                if (node) {
+                  drag(node);
+                }
+              }}
+            >
+              <Image src={champion.image} alt={champion.name} fill />
+            </div>
+          ) : null}
         </div>
-      ) : null}
-    </div>
+      </div>
+    </>
   );
 }
