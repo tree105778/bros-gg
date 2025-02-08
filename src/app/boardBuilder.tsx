@@ -10,8 +10,8 @@ export default function BoardBuilder() {
         {Array.from({ length: 28 }).map((_, idx) => (
           <div
             key={idx}
-            className={`${styles.hexagonWrapper} ${
-              Math.floor(idx / 7) % 2 === 1 ? styles.offset : ""
+            className={`${styles.hexagonWrapper}${
+              Math.floor(idx / 7) % 2 === 1 ? " " + styles.offset : ""
             }`}
           >
             {/* <div className={styles.hexagon}> */}

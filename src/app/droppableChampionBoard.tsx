@@ -44,7 +44,7 @@ export default function DroppableChampionBoard({
     [champion]
   );
 
-  const [, drag] = useDrag<Champion>(
+  const [, drag] = useDrag<Champion, void, { isDragging: boolean }>(
     () => ({
       type: "CHAMPION",
       item: {
@@ -56,6 +56,9 @@ export default function DroppableChampionBoard({
         star: champion?.star,
         item: champion?.item,
       },
+      collect: (monitor) => ({
+        isDragging: monitor.isDragging(),
+      }),
       end: () => {
         if (champion) {
           // setChampion(undefined);
@@ -67,34 +70,48 @@ export default function DroppableChampionBoard({
     [champion]
   );
 
+  const starHandleClick = () => {
+    if (champion) {
+      const prev = { ...champion };
+      if (prev.star === 3) prev.star = 0;
+      setChampionIndex(X, Y, { ...prev, star: (prev?.star || 0) + 1 });
+    }
+  };
+
   return (
     <>
-      {champion !== undefined ? (
-        <div
-          className="absolute top-0 left-[50%] z-[1]"
-          style={{
-            transform: "translateX(-50%)",
-          }}
-        >
-          <div className="flex cursor-pointer gap-x-[2px]">
-            <div
-              className="size-5 rounded-full border bg-white bg-no-repeat bg-center bg-[length:75%]"
-              style={{ backgroundImage: 'url("/champion-star-1.jpeg")' }}
-            ></div>
-          </div>
-        </div>
-      ) : null}
       <div
+        ref={(node) => {
+          if (node && champion) {
+            drag(node);
+          }
+        }}
         style={{
-          clipPath:
-            "polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)",
-          backgroundColor: "rgb(34, 34, 34)",
           width: "100%",
           height: "100%",
           margin: 0,
           position: "relative",
         }}
       >
+        {champion !== undefined ? (
+          <div
+            className="absolute top-0 left-[50%] z-[1]"
+            style={{
+              transform: "translateX(-50%)",
+            }}
+            onClick={starHandleClick}
+          >
+            <div className="flex cursor-pointer gap-x-[2px]">
+              {Array.from({ length: champion.star || 1 }).map((_, idx) => (
+                <div
+                  key={idx}
+                  className="size-5 rounded-full border bg-white bg-no-repeat bg-center bg-[length:75%]"
+                  style={{ backgroundImage: 'url("/champion-star-1.jpeg")' }}
+                ></div>
+              ))}
+            </div>
+          </div>
+        ) : null}
         <div
           ref={(node) => {
             if (node) {
@@ -106,23 +123,15 @@ export default function DroppableChampionBoard({
               ? canDrop
                 ? "lightgreen"
                 : "transparent"
-              : "transparent",
+              : "rgb(34, 34, 34)",
             width: "100%",
             height: "100%",
-            position: "relative",
             clipPath:
               "polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)",
-            overflow: "visible",
           }}
         >
           {champion !== undefined ? (
-            <div
-              ref={(node) => {
-                if (node) {
-                  drag(node);
-                }
-              }}
-            >
+            <div>
               <Image src={champion.image} alt={champion.name} fill />
             </div>
           ) : null}
